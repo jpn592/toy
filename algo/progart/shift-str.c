@@ -1,6 +1,6 @@
 
 // Definition:
-//  Shift `n` bytes of string `s`.
+//  Shift  string `s` right `n` bytes.
 //  e.g. shift("abcdef", 2) = "efabcd"
 // 
 // Limit:

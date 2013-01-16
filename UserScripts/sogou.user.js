@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name   Sogou cloud IME shortcuts
 // @author justmao945 AT gmail DOT com
-// @match  http://*/*
-// @match  https://*/*
+// @exclude http://www.cc98.org/*
+// @include http://*/*
+// @include https://*/*
 // @run_at document_end
 // ==/UserScript==
 //
@@ -22,6 +23,12 @@ var code = function(){
   var COMMA = 188;
   var isCtrl = false;
 
+  var insIME = function(){
+    var js = document.createElement('script');
+    js.setAttribute('src', 'http://web.pinyin.sogou.com/web_ime/init2.php');
+    document.body.appendChild(js);
+  }
+
   var onkeyup = document.onkeyup;
   document.onkeyup = function(e) {
     if(e.which === CTRL)
@@ -37,9 +44,7 @@ var code = function(){
     }
     else if(e.which === COMMA && isCtrl) {
       if( typeof(imeInit) === 'undefined' ){
-        var js = document.createElement('script');
-        js.setAttribute('src', 'http://web.pinyin.sogou.com/web_ime/init2.php');
-        document.body.appendChild(js);
+        insIME();
       }else if( ime_close ){
         imeInit();
       }else{
@@ -49,6 +54,9 @@ var code = function(){
     if( onkeydown && typeof(onkeydown) === 'function' )
       onkeydown(e);
   }
+
+  // default install IME
+  insIME();
 }
 
 var script = document.createElement('script');

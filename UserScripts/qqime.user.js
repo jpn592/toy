@@ -1,21 +1,17 @@
 // ==UserScript==
-// @name   Sogou cloud IME shortcuts
+// @name   QQ cloud IME shortcuts
 // @author justmao945 AT gmail DOT com
-// @exclude http://www.cc98.org/*
-// @exclude http://*web*.q*.com/*
-// @exclude http://*app*.qq.com/*
-// @exclude http://*qz*.qq.com/*
 // @include http://*/*
 // @include https://*/*
 // @run_at document_end
 // ==/UserScript==
 //
-// * Press Ctrl + , to trigger IME.
+// * Press Ctrl + , to toggle IME.
 // * Can't work in HTTPS mode ? Add the command line flag
 //      --allow-running-insecure-content
 //   to prevent Chrome from checking for insecure content.
 // 
-// [0] http://pinyin.sogou.com/cloud/?r=pinyin
+// [0] http://py.qq.com/web/
 // [1] http://stackoverflow.com/questions/10485992/hijacking-a-variable-with-a-userscript-for-chrome
 // [2] http://www.catswhocode.com/blog/using-keyboard-shortcuts-in-javascript
 // [3] http://code.google.com/p/chromium/issues/detail?id=128413
@@ -26,10 +22,18 @@ var code = function(){
   var COMMA = 188;
   var isCtrl = false;
 
-  var insIME = function(){
-    var js = document.createElement('script');
-    js.setAttribute('src', 'http://web.pinyin.sogou.com/web_ime/init2.php');
-    document.body.appendChild(js);
+  var toggleIME = function(){
+    if( typeof(window.QQWebIME) === 'undefined' ){
+      var js = document.createElement('script');
+      js.async=true;
+      js.src='//ime.qq.com/fcgi-bin/getjs';
+      js.setAttribute('ime-cfg','lt=2');
+      
+      var head = document.getElementsByTagName('head')[0];
+      head.insertBefore(js, head.firstChild);
+    }else{
+      window.QQWebIME.toggle();
+    }
   }
 
   var onkeyup = document.onkeyup;
@@ -46,20 +50,14 @@ var code = function(){
       isCtrl = true;
     }
     else if(e.which === COMMA && isCtrl) {
-      if( typeof(imeInit) === 'undefined' ){
-        insIME();
-      }else if( ime_close ){
-        imeInit();
-      }else{
-        imeClose();
-      }
+      toggleIME();
     }
     if( onkeydown && typeof(onkeydown) === 'function' )
       onkeydown(e);
   }
 
   // default install IME
-  insIME();
+  toggleIME();
 }
 
 var script = document.createElement('script');

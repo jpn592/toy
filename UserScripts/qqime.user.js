@@ -18,11 +18,12 @@
 // [2] http://www.catswhocode.com/blog/using-keyboard-shortcuts-in-javascript
 // [3] http://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
 
-var code = function(){
-  // do nothing in an iframe
-  if( top !== self )
-    return;
 
+// do nothing in an iframe
+if( top !== self )
+  return;
+
+var code = function(){
   var CTRL  = 17;
   var SPACE = 32;
   var COMMA = 188;
@@ -61,7 +62,6 @@ var code = function(){
 }
 
 var req = new XMLHttpRequest();
-
 req.addEventListener('load', function(e){
   // load IME
   console.log("Loading QQ Cloud IME...");

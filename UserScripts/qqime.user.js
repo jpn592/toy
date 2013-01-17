@@ -15,8 +15,13 @@
 // [1] http://stackoverflow.com/questions/10485992/hijacking-a-variable-with-a-userscript-for-chrome
 // [2] http://www.catswhocode.com/blog/using-keyboard-shortcuts-in-javascript
 // [3] http://code.google.com/p/chromium/issues/detail?id=128413
+// [4] http://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
 
 var code = function(){
+  // do nothing in an iframe
+  if( top !== self )
+    return;
+
   var CTRL  = 17;
   var SPACE = 32;
   var COMMA = 188;
@@ -31,6 +36,7 @@ var code = function(){
       
       var head = document.getElementsByTagName('head')[0];
       head.insertBefore(js, head.firstChild);
+      console.log("Loading QQ Cloud IME...");
     }else{
       window.QQWebIME.toggle();
     }

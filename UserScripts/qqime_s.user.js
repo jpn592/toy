@@ -38,7 +38,7 @@ var code = function(){
        * Copyright (c) 2010, Tencent Research. All Rights Reserved. --- rev.838
        * How to update?
        * [1] Get file from http://ime.qq.com/fcgi-bin/getjs
-       * [2] Copy <code> part from file "... eval( <code> ) ..." to JSON.stringfy(<code>)
+       * [2] Copy <code> part from file "... eval( <code> ) ..." to JSON.stringify(<code>)
        * [3] Paste result to the right of =
        * FIXME JSON.stringfy works well because the result of <code> is a string...
        * TODO Check new version automatically ?
@@ -77,10 +77,16 @@ var code = function(){
   toggleIME();
 }
 
-var script = document.createElement('script');
-script.textContent = '(' + code + ')()';
-(document.head||document.documentElement).appendChild(script);
-script.parentNode.removeChild(script);
+// test link to qqime server
+var req = new XMLHttpRequest();
+req.addEventListener('load', function(e){
+  var script = document.createElement('script');
+  script.textContent = '(' + code + ')()';
+  (document.head||document.documentElement).appendChild(script);
+  script.parentNode.removeChild(script);
+});
+req.open('GET', 'http://ime.qq.com/fcgi-bin/reportfirst', true);
+req.send();
 
 // to disable slow highlighting...
 // vim:set ft=text:

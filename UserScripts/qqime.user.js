@@ -9,10 +9,6 @@
 //
 // * Press Ctrl + , to toggle IME.
 //
-// * Can't work in HTTPS mode ? Add the command line flag
-//      --allow-running-insecure-content
-//   to prevent Chrome from checking for insecure content.
-//
 // * Can't install from local file ? Add the command line flag
 //       --enable-easy-off-store-extension-install
 //   to prevent Chrome from checking for off stroe extension.
@@ -20,8 +16,7 @@
 // [0] http://py.qq.com/web/
 // [1] http://stackoverflow.com/questions/10485992/hijacking-a-variable-with-a-userscript-for-chrome
 // [2] http://www.catswhocode.com/blog/using-keyboard-shortcuts-in-javascript
-// [3] http://code.google.com/p/chromium/issues/detail?id=128413
-// [4] http://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
+// [3] http://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
 
 var code = function(){
   // do nothing in an iframe
@@ -33,16 +28,9 @@ var code = function(){
   var COMMA = 188;
   var isCtrl = false;
 
-  var toggleIME = function(){
+  var toggleIME = function(ime){
     if( typeof(window.QQWebIME) === 'undefined' ){
-      var js = document.createElement('script');
-      js.async=true;
-      js.src='//ime.qq.com/fcgi-bin/getjs';
-      js.setAttribute('ime-cfg','lt=2');
-      
-      var head = document.getElementsByTagName('head')[0];
-      head.insertBefore(js, head.firstChild);
-      console.log("Loading QQ Cloud IME...");
+      console.error("IME not loaded...");
     }else{
       window.QQWebIME.toggle();
     }
@@ -72,8 +60,23 @@ var code = function(){
   toggleIME();
 }
 
-var script = document.createElement('script');
-script.textContent = '(' + code + ')()';
-(document.head||document.documentElement).appendChild(script);
-script.parentNode.removeChild(script);
+var req = new XMLHttpRequest();
+
+req.addEventListener('load', function(e){
+  // load IME
+  console.log("Loading QQ Cloud IME...");
+  var js = document.createElement('script');
+  js.setAttribute('ime-cfg','lt=2');
+  js.textContent = req.responseText;
+  var head = document.getElementsByTagName('head')[0];
+  head.insertBefore(js, head.firstChild);
+
+  // add others
+  js.textContent = '(' + code + ')()';
+  (document.head || document.documentElement).appendChild(js);
+  js.parentNode.removeChild(js);
+});
+req.open('GET', 'http://ime.qq.com/fcgi-bin/getjs', true);
+req.send();
+
 

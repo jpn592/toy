@@ -1,5 +1,5 @@
 # Maintainer: Jianjun Mao <justmao945@gmail.com>
-pkgname=xcursor-oxygen-neon
+pkgname=xcursor-oxy-neon
 pkgver=0.2
 pkgrel=1
 pkgdesc="Stylized oxygen mouse theme created for use with dark desktop and especially for FRUiT's Neon suite."

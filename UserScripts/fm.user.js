@@ -1,11 +1,16 @@
 // ==UserScript==
-// @name   QQ Music Download Helper
-// @author justmao945 AT gmail DOT com
-// @match  http://fm.qq.com/*
-// @run_at document_end
+// @name    QQ Music Download Helper
+// @author  justmao945 AT gmail DOT com
+// @match   http://fm.qq.com/*
+// @run_at  document_end
+// @version rev.20130115
 // ==/UserScript==
 //
-// Press Ctrl + Down Arrow to download.
+// * Press Ctrl + Down Arrow to download.
+//
+// * Can't install from local file ? Add the command line flag
+//       --enable-easy-off-store-extension-install
+//   to prevent Chrome from checking for off stroe extension.
 //
 // [1] http://stackoverflow.com/questions/10485992/hijacking-a-variable-with-a-userscript-for-chrome
 // [2] http://www.catswhocode.com/blog/using-keyboard-shortcuts-in-javascript

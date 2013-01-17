@@ -1,20 +1,25 @@
 // ==UserScript==
-// @name   Sogou cloud IME shortcuts
-// @author justmao945 AT gmail DOT com
+// @name    Sogou Cloud IME Helper
+// @author  justmao945 AT gmail DOT com
 // @exclude http://www.cc98.org/*
 // @exclude http://*web*.q*.com/*
 // @exclude http://*app*.qq.com/*
 // @exclude http://*qz*.qq.com/*
 // @include http://*/*
 // @include https://*/*
-// @run_at document_end
+// @run_at  document_end
 // ==/UserScript==
 //
 // * Press Ctrl + , to trigger IME.
+//
 // * Can't work in HTTPS mode ? Add the command line flag
 //      --allow-running-insecure-content
 //   to prevent Chrome from checking for insecure content.
 // 
+// * Can't install from local file ? Add the command line flag
+//       --enable-easy-off-store-extension-install
+//   to prevent Chrome from checking for off stroe extension.
+//
 // [0] http://pinyin.sogou.com/cloud/?r=pinyin
 // [1] http://stackoverflow.com/questions/10485992/hijacking-a-variable-with-a-userscript-for-chrome
 // [2] http://www.catswhocode.com/blog/using-keyboard-shortcuts-in-javascript

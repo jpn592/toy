@@ -56,9 +56,6 @@ var code = function(){
     if( onkeydown && typeof(onkeydown) === 'function' )
       onkeydown(e);
   }
-
-  // default install IME
-  toggleIME();
 }
 
 var req = new XMLHttpRequest();
@@ -72,6 +69,7 @@ req.addEventListener('load', function(e){
   head.insertBefore(js, head.firstChild);
 
   // add others
+  js = document.createElement('script');
   js.textContent = '(' + code + ')()';
   (document.head || document.documentElement).appendChild(js);
   js.parentNode.removeChild(js);

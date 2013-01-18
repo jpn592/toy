@@ -10,13 +10,13 @@
 // [1] https://developer.mozilla.org/en/window.location
 //
 
-// rules
+// rules to be blocked
 var rules =
 {
   "www.bilibili.tv" : {
     ids: ["taobaoid"],
     classes: ["ad-b", "ad-b2", "ad-b3", "ad-b4", "ad-e", "ad-e3", "ad-f"],
-    func: null
+    func: null /* function */
   },
 
   "www.acfun.tv" : {
@@ -24,7 +24,19 @@ var rules =
     classes: ["ad"],
     func: null
   },
+
+  "bt.ktxp.com": {
+    ids: [],
+    classes: ["money"],
+    func: null
+  }
 };
+
+// After timeout, script loops will be breaked.
+var timeout = 1000;
+
+// Loops will be repeated between every interval.
+var interval = 300;
 
 
 // ------------------------------------------
@@ -33,26 +45,57 @@ var rules =
 var rule = rules[location.hostname];
 if( ! rule ) return;
 
-var rm = function(e){
+// Remove node e from DOM
+// return ture if e is not null and removed, or false
+var rm = function( /* Element */ e ){
   if( e && e.parentNode ){
     console.warn("[Blocked] {URI:'" + e.baseURI + "', id:'" + e.id
                   + "', class:'" + e.className + "'}");
     e.parentNode.removeChild(e);
+    return true;
   }
+  return false;
 }
 
-for( var i=0; i<rule.ids.length; ++i ){
-  rm( document.getElementById( rule.ids[i] ) );
-}
-
-for( var i=0; i<rule.classes.length; ++i ){
-  var es = document.getElementsByClassName( rule.classes[i] );
-  for( var j=0; j<es.length; ++j ){
-    rm( es[j] );
+// loops for blocking
+var loop = function(){
+  var cnt = 0;
+  if( rule.ids && rule.ids.constructor === Array ){
+    for( var i=0; i<rule.ids.length; ++i ){
+      if( rm( document.getElementById( rule.ids[i] ) ) ){
+        cnt++;
+      }
+    }
   }
+
+  if( rule.classes && rule.classes.constructor === Array ){
+    for( var i=0; i<rule.classes.length; ++i ){
+      var es = document.getElementsByClassName( rule.classes[i] );
+      for( var j=0; j<es.length; ++j ){
+        if ( rm( es[j] ) ){
+          cnt++;
+        }
+      }
+    }
+  }
+
+  if( typeof( rule.func ) === "function" ){
+    if ( rule.func() ){
+      cnt++;
+    }
+  }
+  return cnt;
 }
 
-if( typeof( rule.func ) === "function" ){
-  rule.func();
-}
+// loop first
+loop();
+
+// init interval
+var interId = setInterval(loop, interval);
+
+// clear interval after timeout
+// TODO Smarter stopper according to the value returned by loop() ?
+setTimeout(function(){
+  clearInterval(interId);
+}, timeout);
 

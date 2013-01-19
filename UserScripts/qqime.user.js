@@ -1,6 +1,9 @@
 // ==UserScript==
 // @name    QQ Cloud IME Helper
 // @author  justmao945 AT gmail DOT com
+// @exclude https://github.com/*
+// @exclude https://*.archlinux.org/*
+// @exclude https://plus.google.com/*
 // @include http://*/*
 // @include https://*/*
 // @run_at  document_end
@@ -61,7 +64,7 @@ var code = function(){
 var req = new XMLHttpRequest();
 req.addEventListener('load', function(e){
   // load IME
-  console.log("Loading QQ Cloud IME...");
+  console.info("Loading QQ Cloud IME...");
   var js = document.createElement('script');
   js.setAttribute('ime-cfg','lt=2');
   js.textContent = req.responseText;

@@ -16,27 +16,45 @@ var rules =
   "www.bilibili.tv" : {
     ids: ["taobaoid"],
     classes: ["ad-b", "ad-b2", "ad-b3", "ad-b4", "ad-e", "ad-e3", "ad-f"],
-    func: null /* function */
+    func: null, /* function(loopId, loop) will be called on every loop */
+    once: null, /* function(init) will be called only once */
   },
 
   "www.acfun.tv" : {
     ids: [],
     classes: ["ad"],
-    func: null
   },
 
   "bt.ktxp.com": {
     ids: [],
     classes: ["money"],
-    func: null
-  }
+  },
+
+  "dict.youdao.com": {
+    ids: ["imgAd", "topImgAd", "ads"],
+    classes: [],
+    once: function(init){
+      var f = document.getElementById("f");
+      var onsub = f.onsubmit;
+      f.onsubmit = function(){
+        init();
+        if( typeof(onsub) === 'function' ) onsub();
+      };
+    },
+  },
+  
+  //TODO add new rules here
 };
 
+
 // After timeout, script loops will be breaked.
-var timeout = 1000;
+var timeout = 2100;
 
 // Loops will be repeated between every interval.
-var interval = 300;
+var interval = 500;
+
+// nth loop
+var loopId = 0;
 
 
 // ------------------------------------------
@@ -80,22 +98,30 @@ var loop = function(){
   }
 
   if( typeof( rule.func ) === "function" ){
-    if ( rule.func() ){
+    if ( rule.func(loopId, loop) ){
       cnt++;
     }
   }
+  loopId++;
   return cnt;
 }
 
-// loop first
-loop();
+var init = function(){
+  // loop first
+  loop();
 
-// init interval
-var interId = setInterval(loop, interval);
+  // init interval
+  var interId = setInterval(loop, interval);
 
-// clear interval after timeout
-// TODO Smarter stopper according to the value returned by loop() ?
-setTimeout(function(){
-  clearInterval(interId);
-}, timeout);
+  // clear interval after timeout
+  // TODO Smarter stopper according to the value returned by loop() ?
+  setTimeout(function(){
+    clearInterval(interId);
+  }, timeout);
+}
 
+if( typeof(rule.once) === "function" ){
+  rule.once(init);
+}
+
+init();

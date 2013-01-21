@@ -43,6 +43,10 @@ var rules =
     },
   },
   
+  "www.qiushibaike.com": {
+    ids: ["box"],
+    classes: ["sponsor"],
+  },
   //TODO add new rules here
 };
 

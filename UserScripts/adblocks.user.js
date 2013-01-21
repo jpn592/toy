@@ -45,7 +45,7 @@ var rules =
   
   "www.qiushibaike.com": {
     ids: ["box"],
-    classes: ["sponsor"],
+    classes: ["sponsor", "foot"],
   },
   //TODO add new rules here
 };

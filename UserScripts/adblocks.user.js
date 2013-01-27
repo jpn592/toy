@@ -47,6 +47,10 @@ var rules =
     ids: ["box"],
     classes: ["sponsor", "foot"],
   },
+  
+  "115.com": {
+    classes: ["side-ban"],
+  },
   //TODO add new rules here
 };
 
